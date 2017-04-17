@@ -1,0 +1,62 @@
+html{
+	height: 100%;
+}
+
+body{
+	margin: 0;
+	height: 100%;
+}
+
+#root{
+	height: 100%;
+}
+
+.container{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction:column;
+}
+
+.main{
+	height: 100%;
+}
+
+.main-header{
+	width: 100%;
+	height: 60px;
+	border-bottom: 1px solid black;
+	box-sizing: border-box;
+	line-height: 60px;
+	font-size: 20px;
+	padding-left: 30px;
+}
+
+.app-wrapper{
+	display: flex;
+	flex:1;
+}
+
+.func-nav{
+	box-sizing: border-box;
+	background-color: #4d4d4d;
+}
+
+.routers{
+	padding: 20px;
+	flex:1;
+	overflow:auto;
+}
+
+.func-nav > a{
+	color: white;
+	text-decoration: none;
+	padding: 10px 20px;
+	display: block;
+	width: 100px;
+	text-align: center;
+}
+
+.func-nav > a:nth-child(1){
+	padding-top: 20px;
+}

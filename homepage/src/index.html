@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div id="content">
+	<header>
+		<div class="logo">
+			<img src="statics/logo.png" alt="">
+		</div>
+		<div class="search">
+			<input type="text" :placeholder="search_placeholder"/>
+			<div class="search-button"></div>
+		</div>
+		<div class="user-releated">
+			<ul>
+				<li><a href="#">客服中心</a></li>
+				<li><a href="#">招贤纳士</a></li>
+				<li><a href="#">会员中心</a></li>
+			</ul>
+		</div>
+		<div class="grey-vertical-line"></div>
+		<div class="user-action">
+			<div class="user-login">
+				登陆
+			</div>
+			<div class="user-password">
+				注册
+			</div>
+		</div>
+	</header>
+
+	<div class="menu">
+		<div class="row-wrapper">
+			<nav>
+				<ul>
+					<li>首页</li>
+					<li>榜单</li>
+					<li>下载客户端</li>
+					<li class="last-nav-item">
+							更多 
+							<img src="statics/slide-down.png" alt=""
+							class="hover-hide">
+							<img src="statics/slide-up.png" alt="" class="hover-show">
+							<ul class="sub-nav">
+								<li>电台</li>
+								<li>MV</li>
+								<li>歌单</li>
+								<li>歌手</li>
+							</ul>
+					</li>
+				</ul>
+			</nav>
+			<ul class="community">
+				<li>
+					<span></span>
+					音乐直播</li>
+				<li>
+					<span></span>
+					酷狗Live</li>
+				<li>
+					<span></span>
+					音乐人</li>
+				<li class="little-nav">
+					<span></span>
+					游戏</li>
+				<li class="little-nav">
+					<span></span>
+					商城</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="slide-container">
+		<ul class="sliders">
+			<transition name="fade" v-for="(item,index) in sliders" >
+				<li v-show="index==activeSliderIndex">
+					<a :href="item.link">
+						<img :src="item.image_url" alt="">
+					</a>
+				</li>
+			</transition>
+		</ul>
+		<ul class="index-dot">
+			<li 
+				v-for="index in sliders.length" 
+				:class="{active:index-1==activeSliderIndex}"
+				@click="sliderDotClickHandler(index-1)"
+				></li>
+		</ul>
+		<div>
+			<div class="pre-slider" @click="sliderPreClickHandler"></div>
+			<div class="next-slider" @click="sliderNextClickHandler"></div>
+		</div>
+	</div>
+
+	<div class="download">
+		<div class="row-wrapper">
+			<div class="pc">
+				<div class="pc-logo"></div>
+				<span>下载PC版</span>
+			</div>
+			<div class="white-vertical-line"></div>
+			<div class="ios">
+				<div class="ios-logo"></div>
+				<span>下载iOS版</span>
+			</div>
+			<div class="white-vertical-line"></div>
+			<div class="android">
+				<div class="android-logo"></div>
+				<span>下载Android版</span>
+			</div>
+		</div>
+		<div class="blur-back">
+			<ul class="sliders">
+				<transition name="fade" v-for="(item,index) in sliders" >
+					<li v-show="index==activeSliderIndex">
+							<img :src="item.image_url" alt="">
+					</li>
+				</transition>
+			</ul>
+		</div>
+	</div>
+
+	<section class="row-wrapper">
+		<div class="selected-cd">
+			<header>
+				<img src="statics/title-selected.jpg" alt="">
+				<span>
+					更多
+				</span>
+			</header>
+			<div class="cd-wrapper">
+				<div class="cd">
+					<img :src="song_sheet[0].image_url" alt="">
+					
+					<div class="info">
+						<span>{{ song_sheet[0].title }}</span><br>
+						<span>{{ song_sheet[0].username }}</span>
+					</div>
+					<div class="listen">
+						<span class="earphone"></span>
+						<span>{{ song_sheet[0].play_times | playTimes }}</span>
+					</div>
+					<div class="cd-hover-cover">
+						<div class="cd-play"></div>						
+					</div>
+				</div>
+				<div class="little-cd" v-for="(item,index) in song_sheet" v-if="index!=0">
+					<img :src="item.image_url" alt="">
+					<div class="info">
+						<span>{{ item.title }}</span><br>
+						<span>{{ item.username }}</span>
+					</div>
+					<div class="listen">
+						<span class="earphone"></span>
+						<span>{{ item.play_times | playTimes }}</span>
+					</div>
+					<div class="cd-hover-cover">
+						<div class="cd-play"></div>						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="top-list">
+			<header>
+				<img src="statics/Z-6.jpg" alt="">
+				<span>
+					更多
+				</span>
+			</header>
+			<div>
+				<div class="top-list-item" v-for="item in song_top_list">
+					<a :href="item.link">
+						<div class="list-cover">
+							<img :src="item.image_url" alt="">
+							<div class="hover-cover">
+								<div class="hover-cover-play"></div>
+							</div>
+						</div>
+						<div class="list-text">
+							<span>{{ item.title }}</span>
+							<span>1.{{ item.song_list[0] }}</span>
+							<span>2.{{ item.song_list[1] }}</span>
+						</div>
+						<div class="list-item-enter"></div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="row-wrapper">
+		<div class="song-first">
+			<header>
+				<img src="statics/title-first.jpg" alt="">
+				<span 
+					v-for="(item,index) in songCountries"
+					:class="{active:index==songCountryIndex,'song-country':true}"
+					@mouseenter="changeSongCountry(index)"
+					>
+					{{ item }}
+				</span>
+				<span class="play-all">
+					<span class="play-btn"></span>	
+					<span>全部播放</span>
+				</span>
+			</header>
+			<div class="song-list">
+				<div class="song-item" v-for="item in currentSongs">
+					<span class="song-name">{{ item.artist }} - {{ item.name }}</span>
+					<span class="song-only" v-if="item.is_only"></span>
+					<span class="space"></span>
+					<span class="download-btn"></span>
+					<span class="play-btn"></span>
+					<span class="song-duration">{{item.time | time}}</span>
+				</div>
+			</div>
+			<div class="page-nav">
+				<span class="page-pre" 
+				@click="songPagePreClickHandler"></span>
+				<span>{{ songPageIndex+1 }}/3</span>
+				<span class="page-next"
+				@click="songPageNextClickHandler"></span>
+			</div>
+		</div>
+		<div class="recommend-mv">
+			<header>
+				<img src="statics/title-mv.jpg" alt="">
+				<span>
+					<a href="#">更多</a>
+				</span>
+			</header>
+			<div class="mv-wrapper">
+				<div class="mv-item">
+					<a :href="recommend_mv[0].play_link">
+						<img :src="recommend_mv[0].image_url" alt="">
+						<div class="mv-info">
+							<span>{{ recommend_mv[0].name }}</span><br>
+							<span>{{ recommend_mv[0].artist }}</span>	
+						</div>
+						<div class="mv-cover">
+							<div class="mv-play">
+							</div>
+						</div>
+					</a>
+				</div>
+
+				<div class="mv-little-item" v-for="(item,index) in recommend_mv" v-if="index!=0">
+					<div class="little-mv-wrapper">
+						<a :href="item.play_link">
+							<img :src="item.image_url" alt="">
+							<div class="little-cover">
+								<div class="little-mv-play"></div>
+							</div>
+						</a>
+					</div>
+					<div>
+						<span class="little-mv-title">{{ item.name }}</span>
+						<span class="little-mv-desc">{{ item.artist }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div class="ads">
+		<a :href="ads[1].link">
+			<img :src="ads[1].image_url" alt="">
+		</a>
+	</div>
+
+	<section class="row-wrapper">
+		<div class="hot-radio">
+			<header>
+				<img src="statics/title-radio.jpg" alt="">
+				<span>
+					<a href="#">更多</a>
+				</span>
+			</header>
+			<div class="content">
+				<a :href="item.play_link" v-for="item in hot_radio">
+				<div class="radio-item">
+					<div class="image-wrapper">
+							<img :src="item.image_url" alt="">
+					</div>
+					<div>
+						<span class="radio-title">{{ item.name }}</span>
+					</div>
+				</div>
+				</a>
+			</div>
+		</div>
+		<div class="hot-singers">
+			<header>
+				<img src="statics/title-hot-singers.jpg" alt="">
+				<span 
+					v-for="(item,index) in singerCountries" 
+					:class="{
+						active:index==singerCountryIndex,
+						'singer-country':true
+					}" 
+					@mouseenter="changeSingerContry(index)">
+					{{ item }}
+				</span>
+				<span>
+					<a href="#">更多</a>
+				</span>
+			</header>
+			<div class="singer-wrapper">
+				<div class="singer-item" 
+					v-for="item in currentSingers">
+					<span>{{ item.name }}</span>
+					<div>
+						<img :src=" item.image_url" alt="">
+					</div>
+				</div>
+			</div>
+			<div class="page-dot">
+				<span 
+					v-for="index in 3" 
+					:class="{active:index-1==singerIndex}"
+					@mouseenter="changeSingerPageIndex(index-1)"
+				></span>
+			</div>
+		</div>
+	</section>
+
+	<div class="ads">
+		<a :href="ads[0].link">
+			<img :src="ads[0].image_url" alt="">
+		</a>
+	</div>
+
+	<section class="partners">
+		<header>
+			<img src="statics/title-partner.jpg" alt="">
+		</header>
+		<ul>
+			<li v-for="item in partners">
+				<img :src="item.image_url"/>
+			</li>
+		</ul>
+	</section>
+	<section class="friendly-link">
+		<header>
+			<img src="statics/title-friend.jpg" alt="">
+			<span>
+				<a href="#" class="more">更多</a>
+			</span>
+		</header>
+		<ul>
+			<li v-for="item in friendly_link">
+				<a :href="item.link">{{ item.name }}</a>
+			</li>
+		</ul>
+	</section>
+
+	<footer>
+		<ul class="docs">
+			<li><a href="#">关于酷狗</a></li>
+			<li class="grey-vertical-line"></li>
+			<li><a href="#">广告服务</a></li>
+			<li class="grey-vertical-line"></li>
+			<li><a href="#">版权指引</a></li>
+			<li class="grey-vertical-line"></li>
+			<li><a href="#">隐私政策</a></li>
+			<li class="grey-vertical-line"></li>
+			<li><a href="#">用户服务协议</a></li>
+			<li class="grey-vertical-line"></li>
+			<li><a href="#">推广合作</a></li>
+			<li class="grey-vertical-line"></li>
+			<li><a href="#">酷狗音乐人</a></li>
+			<li class="grey-vertical-line"></li>
+			<li><a href="#">酷狗音乐推</a></li>
+			<li class="grey-vertical-line"></li>
+			<li><a href="#">招聘信息</a></li>
+			<li class="grey-vertical-line"></li>
+			<li><a href="#">客服中心</a></li>
+			<li class="grey-vertical-line"></li>
+			<li><a href="#">用户体验提升计划</a></li>
+		</ul>
+		<div class="announcement">
+			<p>我们致力于推动网络正版音乐发展，相关版权合作请联系copyrights@kugou.com</p>
+			<p>
+				信息网络传播视听节目许可证 1910564 增值电信业务经营许可证粤B2-20060339    
+				<a href="#" class="guangzhou-link">粤ICP备09017694号-2</a>
+				<span class="footer-icon"></span>
+			</p>
+			<p>广播电视节目制作经营许可证（粤）字第01270号    营业性演出许可证穗天演440106026</p>
+			<p>穗公网监备案证第44010650010167    互联网药品信息服务资格证编号（粤）-非经营性-2012-0018</p>
+			<p>Copyright  ©  2004-2017 KuGou-Inc.All Rights Reserved
+			<span class="government"></span>
+			</p>
+		</div>
+	</footer>
+</div>
+	<script src="../node_modules/vue/dist/vue.min.js"></script>
+	<script src="js/common.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
