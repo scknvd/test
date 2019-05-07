@@ -144,6 +144,7 @@ new Vue({
 		}
 	},
 	mounted:function(){
+		console.log('dev');
 		Promise.all(
 			paths.map(path=>Net.get(path))
 		).then(res => {
